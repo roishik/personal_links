@@ -31,7 +31,7 @@ export default function LinkCard({
     >
       <Card 
         className={`hover:shadow-md transition-all ${className}`}
-        asChild
+        asChild={true}
       >
         <a 
           href={href}
