@@ -18,7 +18,7 @@ export default function LinksContainer() {
     <div className="w-full max-w-md space-y-4">
       {/* LinkedIn Link */}
       <LinkCard
-        href="https://www.linkedin.com/in/roishik/"
+        href="https://www.linkedin.com/in/roishikler"
         icon={<SiLinkedin className="h-5 w-5 text-primary" />}
         label="LinkedIn"
         delay={0.1}
