@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import profileImage from "../assets/profile-image.svg";
 
 export default function ProfileSection() {
   return (
@@ -13,7 +12,7 @@ export default function ProfileSection() {
       <div className="relative w-32 h-32 mb-4">
         <Avatar className="w-32 h-32 border-4 border-primary/20 shadow-lg">
           <AvatarImage 
-            src={profileImage} 
+            src="https://raw.githubusercontent.com/roishik/personal_links/main/assets/my_photo.jpeg" 
             alt="Roi Shik" 
           />
           <AvatarFallback>RS</AvatarFallback>
