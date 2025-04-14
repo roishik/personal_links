@@ -12,7 +12,7 @@ export default function ProfileSection() {
       <div className="relative w-32 h-32 mb-4">
         <Avatar className="w-32 h-32 border-4 border-primary/20 shadow-lg">
           <AvatarImage 
-            src="https://ui-avatars.com/api/?name=Roi+Shik&background=0D8ABC&color=fff&size=256" 
+            src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" 
             alt="Roi Shik" 
           />
           <AvatarFallback>RS</AvatarFallback>
