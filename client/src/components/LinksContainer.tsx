@@ -4,15 +4,14 @@ import LinkCard from "@/components/LinkCard";
 import { motion } from "framer-motion";
 import { 
   Mail, 
-  Zap, 
   BarChart3,
   DollarSign
 } from "lucide-react";
 import { 
   SiLinkedin, 
-  SiGithub
+  SiGithub,
+  SiSubstack
 } from "react-icons/si";
-import { Twitter } from "lucide-react";
 
 export default function LinksContainer() {
   return (
@@ -39,7 +38,7 @@ export default function LinksContainer() {
             className="w-full h-full p-4 bg-white hover:shadow-md transition-all border border-gray-100 hover:bg-white"
           >
             <a
-              href="https://financeblog1.example.com"
+              href="https://ofekalkali.wordpress.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col items-center justify-center text-center"
@@ -47,7 +46,7 @@ export default function LinksContainer() {
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
                 <BarChart3 className="h-5 w-5 text-green-600" />
               </div>
-              <span className="font-medium text-sm text-gray-800">Finance Blog 1</span>
+              <span className="font-medium text-sm text-gray-800">Personal Finance</span>
             </a>
           </Button>
         </motion.div>
@@ -63,7 +62,7 @@ export default function LinksContainer() {
             className="w-full h-full p-4 bg-white hover:shadow-md transition-all border border-gray-100 hover:bg-white"
           >
             <a
-              href="https://financeblog2.example.com"
+              href="https://fintechil.wordpress.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col items-center justify-center text-center"
@@ -71,7 +70,7 @@ export default function LinksContainer() {
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
                 <DollarSign className="h-5 w-5 text-green-600" />
               </div>
-              <span className="font-medium text-sm text-gray-800">Finance Blog 2</span>
+              <span className="font-medium text-sm text-gray-800">Fintech Israel</span>
             </a>
           </Button>
         </motion.div>
@@ -79,11 +78,11 @@ export default function LinksContainer() {
       
       {/* AI & Autonomous Vehicles Blog */}
       <LinkCard
-        href="https://aiblog.example.com"
-        icon={<Zap className="h-5 w-5 text-purple-600" />}
+        href="https://roishikler.substack.com/"
+        icon={<SiSubstack className="h-5 w-5 text-orange-600" />}
         label="AI & Autonomous Vehicles"
         delay={0.3}
-        iconBgColor="bg-purple-100"
+        iconBgColor="bg-orange-100"
       />
       
       {/* GitHub Link */}
@@ -92,15 +91,6 @@ export default function LinksContainer() {
         icon={<SiGithub className="h-5 w-5 text-gray-800" />}
         label="GitHub"
         delay={0.4}
-        iconBgColor="bg-gray-100"
-      />
-      
-      {/* Twitter/X Link */}
-      <LinkCard
-        href="https://twitter.com/roishik"
-        icon={<Twitter className="h-5 w-5 text-gray-800" />}
-        label="X / Twitter"
-        delay={0.5}
         iconBgColor="bg-gray-100"
       />
       
