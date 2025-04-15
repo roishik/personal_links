@@ -42,11 +42,11 @@ export default function LinksContainer() {
         className="relative mt-8 mb-4"
       >
         <div className="absolute -top-3 left-0 right-0 flex justify-center">
-          <div className="bg-white px-4 z-10">
+          <div className="bg-background px-4 z-10">
             <h2 className="text-md font-medium text-gray-700">Thoughts & Writings</h2>
           </div>
         </div>
-        <div className="border border-gray-200 rounded-xl p-4 pt-6">
+        <div className="border border-gray-200 rounded-xl p-4 pt-6 bg-background">
           {/* Financial Blogs (Side by Side) */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <motion.div
