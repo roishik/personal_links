@@ -20,7 +20,7 @@ export default function LinkCard({
   delay = 0,
   className = "",
   iconBgColor = "bg-gray-100",
-  showArrow = true
+  showArrow = false
 }: LinkCardProps) {
   return (
     <motion.div
