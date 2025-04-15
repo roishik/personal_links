@@ -11,7 +11,7 @@ export default function Home() {
       <div className="absolute top-1/4 right-0 w-60 h-60 bg-primary/10 rounded-full blur-3xl -z-10 transform translate-x-1/3"></div>
       
       {/* Content */}
-      <div className="container mx-auto max-w-md z-10">
+      <div className="container mx-auto max-w-xl z-10">
         <ProfileSection />
         <LinksContainer />
         
@@ -21,7 +21,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.5 }}
         >
-          <p>© {new Date().getFullYear()} Roi Shik. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Roi Shikler. All rights reserved.</p>
         </motion.div>
       </div>
     </div>
