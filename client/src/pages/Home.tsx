@@ -11,18 +11,13 @@ export default function Home() {
       <div className="absolute top-1/4 right-0 w-60 h-60 bg-primary/10 rounded-full blur-3xl -z-10 transform translate-x-1/3"></div>
       
       {/* Content */}
-      <div className="container mx-auto max-w-xl z-10">
-        <ProfileSection />
-        <LinksContainer />
-        
-        <motion.div 
-          className="mt-10 pt-6 border-t border-gray-100 text-sm text-center text-gray-500"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
-        >
-          <p>© {new Date().getFullYear()} Roi Shikler. All rights reserved.</p>
-        </motion.div>
+      <div className="container mx-auto z-10">
+        <div className="max-w-xl mx-auto">
+          <ProfileSection />
+        </div>
+        <div className="max-w-md mx-auto">
+          <LinksContainer />
+        </div>
       </div>
     </div>
   );

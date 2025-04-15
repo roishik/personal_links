@@ -15,7 +15,7 @@ import {
 
 export default function LinksContainer() {
   return (
-    <div className="w-full max-w-md space-y-4">
+    <div className="w-full space-y-4">
       {/* LinkedIn Link */}
       <LinkCard
         href="https://www.linkedin.com/in/roishikler"
