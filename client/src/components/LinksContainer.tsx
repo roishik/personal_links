@@ -42,9 +42,10 @@ export default function LinksContainer() {
         className="relative mt-8 mb-4"
       >
         <div className="absolute -top-3 left-0 right-0 flex justify-center">
-          <div className="px-4 z-10">
-            <h2 className="text-md font-medium text-gray-700 bg-[#ffffff] px-2">Thoughts & Writings</h2>
-          </div>
+          <span className="relative z-10 px-3">
+            <span className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white opacity-95"></span>
+            <span className="relative text-md font-medium text-gray-700">Thoughts & Writings</span>
+          </span>
         </div>
         <div className="border border-gray-200 rounded-xl p-4 pt-6">
           {/* Financial Blogs (Side by Side) */}
