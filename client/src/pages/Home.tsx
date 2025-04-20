@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import ProfileSection from "@/components/ProfileSection";
 import LinksContainer from "@/components/LinksContainer";
+import ChatBot from "@/components/ChatBot";
 
 export default function Home() {
   return (
@@ -19,6 +20,9 @@ export default function Home() {
           <LinksContainer />
         </div>
       </div>
+      
+      {/* Chatbot */}
+      <ChatBot />
     </div>
   );
 }
