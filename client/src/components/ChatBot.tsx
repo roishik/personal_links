@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+// Import profile images
+import cartoonShik from '@/assets/cartoon_shik.png';
+import legoShik from '@/assets/lego_shik.png';
+import origamiShik from '@/assets/origami_shik.png';
 
 type Message = {
   id: string;
@@ -28,8 +34,16 @@ export default function ChatBot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
+  const [profileImage, setProfileImage] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  
+  // Select a random profile image on component mount
+  useEffect(() => {
+    const images = [cartoonShik, legoShik, origamiShik];
+    const randomIndex = Math.floor(Math.random() * images.length);
+    setProfileImage(images[randomIndex]);
+  }, []);
 
   // Fetch initial suggested questions
   useEffect(() => {
@@ -136,9 +150,16 @@ export default function ChatBot() {
       >
         <Button 
           onClick={toggleChat} 
-          className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center"
+          className="w-16 h-16 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white"
         >
-          <MessageCircle className="h-6 w-6" />
+          {profileImage ? (
+            <Avatar className="w-full h-full">
+              <AvatarImage src={profileImage} alt="Roi Shikler" />
+              <AvatarFallback className="bg-primary text-white">RS</AvatarFallback>
+            </Avatar>
+          ) : (
+            <MessageCircle className="h-6 w-6 text-primary" />
+          )}
         </Button>
       </motion.div>
 
@@ -156,7 +177,14 @@ export default function ChatBot() {
               {/* Chat Header */}
               <div className="bg-primary text-white p-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
+                  {profileImage ? (
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={profileImage} alt="Roi Shikler" />
+                      <AvatarFallback className="bg-white text-primary">RS</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <MessageCircle className="h-5 w-5" />
+                  )}
                   <h3 className="font-medium">Chat with Roi</h3>
                 </div>
                 <div className="flex items-center gap-1">
@@ -186,9 +214,16 @@ export default function ChatBot() {
                   <div className="p-3 h-80 overflow-y-auto bg-gray-50">
                     {messages.length === 0 ? (
                       <div className="flex flex-col items-center justify-center h-full text-center text-gray-500">
-                        <MessageCircle className="h-10 w-10 mb-2 text-gray-400" />
+                        {profileImage ? (
+                          <Avatar className="h-20 w-20 mb-3">
+                            <AvatarImage src={profileImage} alt="Roi Shikler" />
+                            <AvatarFallback className="bg-primary/10 text-primary">RS</AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <MessageCircle className="h-10 w-10 mb-2 text-gray-400" />
+                        )}
                         <p className="text-sm">Hi, I'm Roi Shikler! Ask me anything about my work, interests, or background.</p>
-                        <div className="mt-4 grid gap-2">
+                        <div className="mt-4 grid gap-2 w-full">
                           {suggestedQuestions.map((question, index) => (
                             <Button
                               key={index}
@@ -208,10 +243,16 @@ export default function ChatBot() {
                             key={message.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} items-end gap-2`}
                           >
+                            {!message.isUser && profileImage && (
+                              <Avatar className="h-8 w-8 flex-shrink-0">
+                                <AvatarImage src={profileImage} alt="Roi Shikler" />
+                                <AvatarFallback className="bg-primary/10 text-primary">RS</AvatarFallback>
+                              </Avatar>
+                            )}
                             <div
-                              className={`max-w-[80%] p-3 rounded-lg ${
+                              className={`max-w-[75%] p-3 rounded-lg ${
                                 message.isUser
                                   ? 'bg-primary text-white rounded-tr-none'
                                   : 'bg-white border border-gray-200 rounded-tl-none'
