@@ -131,7 +131,7 @@ export default function LinksContainer() {
           className="w-full p-4 text-white rounded-xl shadow-sm hover:shadow-md transition-all"
         >
           <a
-            href="mailto:roishik10@gmail.com"
+            href="mailto:roishik10@gmail.com?subject=Hey%20Roi%2C%20Let's%20Connect!&body=Hi%20Roi%2C%0A%0AI%20found%20your%20profile%20through%20your%20links%20page%20and%20would%20love%20to%20connect.%20Looking%20forward%20to%20hearing%20from%20you!%0A%0ABest%20regards"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2"
