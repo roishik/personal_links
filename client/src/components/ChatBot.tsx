@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
 
 type Message = {
   id: string;
@@ -36,11 +35,11 @@ export default function ChatBot() {
   useEffect(() => {
     const fetchSuggestedQuestions = async () => {
       try {
-        const response = await apiRequest({
-          method: 'GET',
-          path: '/api/chat/suggested-questions',
-        });
-        const data = response as SuggestedQuestionsResponse;
+        const response = await fetch('/api/chat/suggested-questions');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json() as SuggestedQuestionsResponse;
         setSuggestedQuestions(data.suggestedQuestions);
       } catch (error) {
         console.error('Failed to fetch suggested questions', error);
@@ -74,13 +73,19 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest({
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        path: '/api/chat',
-        data: { message: userMessage.content },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage.content }),
       });
       
-      const data = response as ChatResponse;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json() as ChatResponse;
       
       const roiMessage: Message = {
         id: (Date.now() + 1).toString(),
