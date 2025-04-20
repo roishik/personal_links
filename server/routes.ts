@@ -6,6 +6,43 @@ import OpenAI from "openai";
 // Initialize the OpenAI client
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+// Daily request limit configuration
+const DAILY_REQUEST_LIMIT = 200;
+
+// Track request count with reset
+interface RequestCounter {
+  count: number;
+  date: string;
+}
+
+// Initialize the counter
+let requestCounter: RequestCounter = {
+  count: 0,
+  date: new Date().toDateString()
+};
+
+// Function to check and update the request counter
+function checkRequestLimit(): boolean {
+  const today = new Date().toDateString();
+  
+  // Reset counter if it's a new day
+  if (today !== requestCounter.date) {
+    requestCounter = {
+      count: 0,
+      date: today
+    };
+  }
+  
+  // Check if we've hit the limit
+  if (requestCounter.count >= DAILY_REQUEST_LIMIT) {
+    return false;
+  }
+  
+  // Increment counter
+  requestCounter.count++;
+  return true;
+}
+
 // Load Roi's personal information
 const ROI_INFO = `
 Roi Shikler is an accomplished product leader, deep technology enthusiast, and former military engineer with a career spanning cutting-edge AI applications, defense-grade R&D, and real-world product delivery in autonomous systems. He currently serves as an Algo Product Manager at Mobileye, where he leads the product suite of parking technologies across both ADAS (Advanced Driver Assistance Systems) and AV (Autonomous Vehicle) domains. Roi oversees in-production systems as well as future offerings, acting as the central interface between internal teams and external partners. His role involves high-frequency interaction with global automotive customers, running product demonstrations, and driving roadmap alignment across technical and business layers.
@@ -53,6 +90,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Add necessary middleware
   app.use(express.json());
   
+  // Endpoint to get usage statistics
+  app.get("/api/chat/usage", (_req: Request, res: Response) => {
+    const today = new Date().toDateString();
+    
+    // Reset counter if it's a new day
+    if (today !== requestCounter.date) {
+      requestCounter = {
+        count: 0,
+        date: today
+      };
+    }
+    
+    res.json({
+      usage: requestCounter.count,
+      limit: DAILY_REQUEST_LIMIT,
+      remaining: Math.max(0, DAILY_REQUEST_LIMIT - requestCounter.count),
+      resetDate: requestCounter.date
+    });
+  });
+  
   // Chatbot API endpoint
   app.post("/api/chat", async (req: Request, res: Response) => {
     try {
@@ -60,6 +117,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
+      }
+      
+      // Check if we've hit the daily limit
+      if (!checkRequestLimit()) {
+        return res.status(429).json({ 
+          error: "Daily chat limit reached", 
+          message: "The daily limit of 200 chat completions has been reached. Please try again tomorrow.",
+          remaining: 0,
+          limit: DAILY_REQUEST_LIMIT
+        });
       }
 
       const systemPrompt = `
@@ -93,7 +160,12 @@ Important instructions:
 
       return res.status(200).json({
         response: response.choices[0].message.content,
-        suggestedQuestions
+        suggestedQuestions,
+        usage: {
+          count: requestCounter.count,
+          limit: DAILY_REQUEST_LIMIT,
+          remaining: DAILY_REQUEST_LIMIT - requestCounter.count
+        }
       });
     } catch (error) {
       console.error("Error in chat endpoint:", error);

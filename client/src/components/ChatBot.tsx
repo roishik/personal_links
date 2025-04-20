@@ -18,9 +18,16 @@ type Message = {
   isUser: boolean;
 };
 
+interface UsageInfo {
+  count: number;
+  limit: number;
+  remaining: number;
+}
+
 interface ChatResponse {
   response: string;
   suggestedQuestions: string[];
+  usage?: UsageInfo;
 }
 
 interface SuggestedQuestionsResponse {
@@ -95,20 +102,46 @@ export default function ChatBot() {
         body: JSON.stringify({ message: userMessage.content }),
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
+        // Handle rate limit specifically
+        if (response.status === 429) {
+          const limitMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            content: "I've reached my daily conversation limit. Please check back tomorrow when the limit resets!",
+            isUser: false,
+          };
+          setMessages((prev) => [...prev, limitMessage]);
+          toast({
+            title: "Daily Limit Reached",
+            description: "The chatbot has reached its daily limit of 200 conversations. Please try again tomorrow.",
+            variant: "destructive",
+          });
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const data = await response.json() as ChatResponse;
+      const chatData = data as ChatResponse;
       
       const roiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response,
+        content: chatData.response,
         isUser: false,
       };
 
       setMessages((prev) => [...prev, roiMessage]);
-      setSuggestedQuestions(data.suggestedQuestions);
+      setSuggestedQuestions(chatData.suggestedQuestions);
+      
+      // Display usage info if approaching limit (> 80% used)
+      if (chatData.usage && chatData.usage.remaining < (chatData.usage.limit * 0.2)) {
+        toast({
+          title: "Approaching Daily Limit",
+          description: `${chatData.usage.remaining} conversations remaining today.`,
+          variant: "default",
+        });
+      }
     } catch (error) {
       console.error('Failed to send message', error);
       toast({
