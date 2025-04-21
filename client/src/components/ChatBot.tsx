@@ -7,10 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-// Import profile images
-import cartoonShik from "@/assets/cartoon_shik.png";
-import legoShik from "@/assets/lego_shik.png";
-import origamiShik from "@/assets/origami_shik.png";
+// No need to import profile images as we'll use direct URLs
 
 type Message = {
   id: string;
@@ -47,7 +44,12 @@ export default function ChatBot() {
 
   // Select a random profile image on component mount
   useEffect(() => {
-    const images = [cartoonShik, legoShik, origamiShik];
+    const images = [
+      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/cartoon_shik.png',
+      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/lego_shik.png',
+      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/origami_shik.png',
+      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/rick_morty_shik.png'
+    ];
     const randomIndex = Math.floor(Math.random() * images.length);
     setProfileImage(images[randomIndex]);
   }, []);
