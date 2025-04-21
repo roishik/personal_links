@@ -127,6 +127,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
       }
+
+      // Log the incoming message
+      console.log(`[${new Date().toISOString()}] Chat message received: ${message}`);
       
       // Check if we've hit the daily limit
       if (!checkRequestLimit()) {
