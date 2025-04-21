@@ -190,11 +190,11 @@ export default function ChatBot() {
             <defs>
               <path
                 id="curve"
-                d="M 15,50 a 35,35 0 0,1 70,0"
+                d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0"
                 fill="transparent"
               />
               <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feGaussianBlur stdDeviation="1.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -202,11 +202,11 @@ export default function ChatBot() {
               </filter>
             </defs>
             <text 
-              className="fill-primary font-bold text-[16px]" 
+              className="fill-primary font-bold text-[12px]" 
               filter="url(#glow)" 
-              style={{ textShadow: "0px 0px 3px rgba(255,255,255,0.8)" }}
+              style={{ textShadow: "0px 0px 2px rgba(255,255,255,0.7)" }}
             >
-              <textPath xlinkHref="#curve" startOffset="2%" className="drop-shadow-md tracking-wide">
+              <textPath xlinkHref="#curve" startOffset="87%" className="drop-shadow-sm tracking-wider">
                 Chat with me!
               </textPath>
             </text>
