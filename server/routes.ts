@@ -4,7 +4,16 @@ import { storage } from "./storage";
 import OpenAI from "openai";
 
 // Initialize the OpenAI client
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+let openai: OpenAI;
+try {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY environment variable is not set');
+  }
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+} catch (error) {
+  console.error('Failed to initialize OpenAI client:', error);
+  throw error;
+}
 
 // Daily request limit configuration
 const DAILY_REQUEST_LIMIT = 200;
