@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Send, X, ChevronUp, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, Send, X, ChevronUp, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 // Import profile images
-import cartoonShik from '@/assets/cartoon_shik.png';
-import legoShik from '@/assets/lego_shik.png';
-import origamiShik from '@/assets/origami_shik.png';
+import cartoonShik from "@/assets/cartoon_shik.png";
+import legoShik from "@/assets/lego_shik.png";
+import origamiShik from "@/assets/origami_shik.png";
 
 type Message = {
   id: string;
@@ -38,13 +38,13 @@ export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
-  const [profileImage, setProfileImage] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  
+
   // Select a random profile image on component mount
   useEffect(() => {
     const images = [cartoonShik, legoShik, origamiShik];
@@ -56,14 +56,14 @@ export default function ChatBot() {
   useEffect(() => {
     const fetchSuggestedQuestions = async () => {
       try {
-        const response = await fetch('/api/chat/suggested-questions');
+        const response = await fetch("/api/chat/suggested-questions");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json() as SuggestedQuestionsResponse;
+        const data = (await response.json()) as SuggestedQuestionsResponse;
         setSuggestedQuestions(data.suggestedQuestions);
       } catch (error) {
-        console.error('Failed to fetch suggested questions', error);
+        console.error("Failed to fetch suggested questions", error);
       }
     };
 
@@ -71,7 +71,7 @@ export default function ChatBot() {
   }, []);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function ChatBot() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input.trim(),
@@ -90,41 +90,43 @@ export default function ChatBot() {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput('');
+    setInput("");
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
+      const response = await fetch("/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: userMessage.content }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         // Handle rate limit specifically
         if (response.status === 429) {
           const limitMessage: Message = {
             id: (Date.now() + 1).toString(),
-            content: "I've reached my daily conversation limit. Please check back tomorrow when the limit resets!",
+            content:
+              "I've reached my daily conversation limit. Please check back tomorrow when the limit resets!",
             isUser: false,
           };
           setMessages((prev) => [...prev, limitMessage]);
           toast({
             title: "Daily Limit Reached",
-            description: "The chatbot has reached its daily limit of 200 conversations. Please try again tomorrow.",
+            description:
+              "The chatbot has reached its daily limit of 200 conversations. Please try again tomorrow.",
             variant: "destructive",
           });
           return;
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const chatData = data as ChatResponse;
-      
+
       const roiMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: chatData.response,
@@ -133,9 +135,12 @@ export default function ChatBot() {
 
       setMessages((prev) => [...prev, roiMessage]);
       setSuggestedQuestions(chatData.suggestedQuestions);
-      
+
       // Display usage info if approaching limit (> 80% used)
-      if (chatData.usage && chatData.usage.remaining < (chatData.usage.limit * 0.2)) {
+      if (
+        chatData.usage &&
+        chatData.usage.remaining < chatData.usage.limit * 0.2
+      ) {
         toast({
           title: "Approaching Daily Limit",
           description: `${chatData.usage.remaining} conversations remaining today.`,
@@ -143,11 +148,11 @@ export default function ChatBot() {
         });
       }
     } catch (error) {
-      console.error('Failed to send message', error);
+      console.error("Failed to send message", error);
       toast({
-        title: 'Error',
-        description: 'Failed to send message. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -174,7 +179,7 @@ export default function ChatBot() {
   return (
     <>
       {/* Chat Button with curved text */}
-      <motion.div 
+      <motion.div
         className="fixed bottom-4 right-4 z-50"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -183,10 +188,7 @@ export default function ChatBot() {
       >
         <div className="relative w-36 h-36 flex items-center justify-center">
           {/* Curved "Chat with me!" text */}
-          <svg 
-            className="absolute w-full h-full" 
-            viewBox="0 0 100 100"
-          >
+          <svg className="absolute w-full h-full" viewBox="0 0 100 100">
             <defs>
               <path
                 id="curve"
@@ -201,26 +203,33 @@ export default function ChatBot() {
                 </feMerge>
               </filter>
             </defs>
-            <text 
-              className="fill-primary font-bold text-[16px]" 
-              filter="url(#glow)" 
+            <text
+              className="fill-primary font-bold text-[13px]"
+              filter="url(#glow)"
+              transform="rotate(-30 50 50)"
               style={{ textShadow: "0px 0px 3px rgba(255,255,255,0.8)" }}
             >
-              <textPath xlinkHref="#curve" startOffset="2%" className="drop-shadow-md tracking-wide">
+              <textPath
+                xlinkHref="#curve"
+                startOffset="2%"
+                className="drop-shadow-md tracking-wide"
+              >
                 Chat with me!
               </textPath>
             </text>
           </svg>
-          
+
           {/* The circular button with profile image */}
-          <Button 
-            onClick={toggleChat} 
+          <Button
+            onClick={toggleChat}
             className="w-20 h-20 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white relative z-10"
           >
             {profileImage ? (
               <Avatar className="w-full h-full">
                 <AvatarImage src={profileImage} alt="Roi Shikler" />
-                <AvatarFallback className="bg-primary text-white">RS</AvatarFallback>
+                <AvatarFallback className="bg-primary text-white">
+                  RS
+                </AvatarFallback>
               </Avatar>
             ) : (
               <MessageCircle className="h-6 w-6 text-primary" />
@@ -246,7 +255,9 @@ export default function ChatBot() {
                   {profileImage ? (
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={profileImage} alt="Roi Shikler" />
-                      <AvatarFallback className="bg-white text-primary">RS</AvatarFallback>
+                      <AvatarFallback className="bg-white text-primary">
+                        RS
+                      </AvatarFallback>
                     </Avatar>
                   ) : (
                     <MessageCircle className="h-6 w-6" />
@@ -254,17 +265,21 @@ export default function ChatBot() {
                   <h3 className="font-medium text-lg">Chat with Roi</h3>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="h-8 w-8 text-white hover:bg-primary-foreground/20"
                     onClick={toggleChat}
                   >
-                    {isMinimized ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    {isMinimized ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
                   </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="h-8 w-8 text-white hover:bg-primary-foreground/20"
                     onClick={closeChat}
                   >
@@ -283,13 +298,20 @@ export default function ChatBot() {
                         {profileImage ? (
                           <Avatar className="h-28 w-28 mb-4">
                             <AvatarImage src={profileImage} alt="Roi Shikler" />
-                            <AvatarFallback className="bg-primary/10 text-primary">RS</AvatarFallback>
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                              RS
+                            </AvatarFallback>
                           </Avatar>
                         ) : (
                           <MessageCircle className="h-10 w-10 mb-2 text-gray-400" />
                         )}
-                        <p className="text-lg font-medium mb-1">Hi, I'm Roi Shikler!</p>
-                        <p className="text-base">Ask me anything about my work, interests, or background.</p>
+                        <p className="text-lg font-medium mb-1">
+                          Hi, I'm Roi Shikler!
+                        </p>
+                        <p className="text-base">
+                          Ask me anything about my work, interests, or
+                          background.
+                        </p>
                         <div className="mt-4 grid gap-2 w-full">
                           {suggestedQuestions.map((question, index) => (
                             <Button
@@ -310,22 +332,29 @@ export default function ChatBot() {
                             key={message.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} items-end gap-2`}
+                            className={`flex ${message.isUser ? "justify-end" : "justify-start"} items-end gap-2`}
                           >
                             {!message.isUser && profileImage && (
                               <Avatar className="h-12 w-12 flex-shrink-0">
-                                <AvatarImage src={profileImage} alt="Roi Shikler" />
-                                <AvatarFallback className="bg-primary/10 text-primary">RS</AvatarFallback>
+                                <AvatarImage
+                                  src={profileImage}
+                                  alt="Roi Shikler"
+                                />
+                                <AvatarFallback className="bg-primary/10 text-primary">
+                                  RS
+                                </AvatarFallback>
                               </Avatar>
                             )}
                             <div
                               className={`max-w-[75%] p-3 rounded-lg ${
                                 message.isUser
-                                  ? 'bg-primary text-white rounded-tr-none'
-                                  : 'bg-white border border-gray-200 rounded-tl-none'
+                                  ? "bg-primary text-white rounded-tr-none"
+                                  : "bg-white border border-gray-200 rounded-tl-none"
                               }`}
                             >
-                              <p className="text-base whitespace-pre-wrap">{message.content}</p>
+                              <p className="text-base whitespace-pre-wrap">
+                                {message.content}
+                              </p>
                             </div>
                           </motion.div>
                         ))}
@@ -337,7 +366,9 @@ export default function ChatBot() {
                   {/* Suggested Questions */}
                   {messages.length > 0 && (
                     <div className="px-3 py-2 bg-gray-50 border-t border-gray-200">
-                      <p className="text-xs text-gray-500 mb-2">Suggested questions:</p>
+                      <p className="text-xs text-gray-500 mb-2">
+                        Suggested questions:
+                      </p>
                       <div className="flex flex-wrap gap-2">
                         {suggestedQuestions.map((question, index) => (
                           <Button
@@ -363,7 +394,7 @@ export default function ChatBot() {
                         placeholder="Type your message..."
                         className="min-h-[60px] resize-none"
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
+                          if (e.key === "Enter" && !e.shiftKey) {
                             e.preventDefault();
                             handleSend();
                           }
