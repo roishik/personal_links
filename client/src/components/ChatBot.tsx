@@ -190,7 +190,7 @@ export default function ChatBot() {
             <defs>
               <path
                 id="curve"
-                d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0"
+                d="M 15,50 a 35,35 0 0,0 70,0"
                 fill="transparent"
               />
               <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -202,11 +202,11 @@ export default function ChatBot() {
               </filter>
             </defs>
             <text 
-              className="fill-primary font-bold text-[12px]" 
+              className="fill-primary font-bold text-[18px]" 
               filter="url(#glow)" 
-              style={{ textShadow: "0px 0px 2px rgba(255,255,255,0.7)" }}
+              style={{ textShadow: "0px 0px 3px rgba(255,255,255,0.8)" }}
             >
-              <textPath xlinkHref="#curve" startOffset="87%" className="drop-shadow-sm tracking-wider">
+              <textPath xlinkHref="#curve" startOffset="5%" className="drop-shadow-md tracking-wide">
                 Chat with me!
               </textPath>
             </text>
