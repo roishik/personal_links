@@ -173,7 +173,7 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Chat Button */}
+      {/* Chat Button with curved text */}
       <motion.div 
         className="fixed bottom-4 right-4 z-50"
         initial={{ opacity: 0, scale: 0.8 }}
@@ -181,19 +181,52 @@ export default function ChatBot() {
         transition={{ delay: 0.8, duration: 0.5 }}
         whileHover={{ scale: 1.05 }}
       >
-        <Button 
-          onClick={toggleChat} 
-          className="w-20 h-20 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white"
-        >
-          {profileImage ? (
-            <Avatar className="w-full h-full">
-              <AvatarImage src={profileImage} alt="Roi Shikler" />
-              <AvatarFallback className="bg-primary text-white">RS</AvatarFallback>
-            </Avatar>
-          ) : (
-            <MessageCircle className="h-6 w-6 text-primary" />
-          )}
-        </Button>
+        <div className="relative w-36 h-36 flex items-center justify-center">
+          {/* Curved "Chat with me!" text */}
+          <svg 
+            className="absolute w-full h-full" 
+            viewBox="0 0 100 100"
+          >
+            <defs>
+              <path
+                id="curve"
+                d="M 15,50 a 35,35 0 0,1 70,0"
+                fill="transparent"
+              />
+              <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text 
+              className="fill-primary font-bold text-[16px]" 
+              filter="url(#glow)" 
+              style={{ textShadow: "0px 0px 3px rgba(255,255,255,0.8)" }}
+            >
+              <textPath xlinkHref="#curve" startOffset="2%" className="drop-shadow-md tracking-wide">
+                Chat with me!
+              </textPath>
+            </text>
+          </svg>
+          
+          {/* The circular button with profile image */}
+          <Button 
+            onClick={toggleChat} 
+            className="w-20 h-20 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white relative z-10"
+          >
+            {profileImage ? (
+              <Avatar className="w-full h-full">
+                <AvatarImage src={profileImage} alt="Roi Shikler" />
+                <AvatarFallback className="bg-primary text-white">RS</AvatarFallback>
+              </Avatar>
+            ) : (
+              <MessageCircle className="h-6 w-6 text-primary" />
+            )}
+          </Button>
+        </div>
       </motion.div>
 
       {/* Chat Panel */}
