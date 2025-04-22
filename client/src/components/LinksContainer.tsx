@@ -69,7 +69,7 @@ export default function LinksContainer() {
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
                     <BarChart3 className="h-5 w-5 text-green-600" />
                   </div>
-                  <span className="font-medium text-sm text-gray-800">Personal Finance</span>
+                  <span className="font-medium text-sm text-gray-800">Personal Finance (Hebrew)</span>
                 </a>
               </Button>
             </motion.div>
@@ -93,7 +93,7 @@ export default function LinksContainer() {
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
                     <DollarSign className="h-5 w-5 text-green-600" />
                   </div>
-                  <span className="font-medium text-sm text-gray-800">Fintech Israel</span>
+                  <span className="font-medium text-sm text-gray-800">Fintech Israel (Hebrew)</span>
                 </a>
               </Button>
             </motion.div>
