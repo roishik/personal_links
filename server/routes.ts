@@ -7,11 +7,11 @@ import OpenAI from "openai";
 let openai: OpenAI;
 try {
   if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY environment variable is not set');
+    throw new Error("OPENAI_API_KEY environment variable is not set");
   }
   openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 } catch (error) {
-  console.error('Failed to initialize OpenAI client:', error);
+  console.error("Failed to initialize OpenAI client:", error);
   throw error;
 }
 
@@ -27,26 +27,26 @@ interface RequestCounter {
 // Initialize the counter
 let requestCounter: RequestCounter = {
   count: 0,
-  date: new Date().toDateString()
+  date: new Date().toDateString(),
 };
 
 // Function to check and update the request counter
 function checkRequestLimit(): boolean {
   const today = new Date().toDateString();
-  
+
   // Reset counter if it's a new day
   if (today !== requestCounter.date) {
     requestCounter = {
       count: 0,
-      date: today
+      date: today,
     };
   }
-  
+
   // Check if we've hit the limit
   if (requestCounter.count >= DAILY_REQUEST_LIMIT) {
     return false;
   }
-  
+
   // Increment counter
   requestCounter.count++;
   return true;
@@ -79,6 +79,8 @@ Roi's work is guided by a set of core principles: the drive to build meaningful,
 In his personal life, Roi is married to Dr. Aya Bardugo, a physician and research leader who heads the research division of the IDF Medical Corps. Aya's work focuses on advancing the health and well-being of soldiers, and Roi takes deep pride in her contributions. They share a life in Tel Aviv with their two children: Nadav, born in January 2021, and Tom, born in October 2023. Roi is an active and engaged father who balances work with family life, and he enjoys spending time with his family on hikes, road trips, and culinary adventures.
 
 He is also an avid traveler, gym-goer, and both indoor and outdoor climber. Roi's long-term vision includes either founding a startup, growing into senior leadership in tech, or potentially taking a role in the public sector to influence policy through data-driven decision-making. Whatever the path, he is committed to staying at the edge of innovation and using his skills to make a meaningful difference.
+
+Some of Roi's favorate tools: 1. https://rightnow.finance/ for stock analysis and deep insights. 2. https://www.notion.com/ for note-taking and project management. 3. chatGPT.com for quick answers and code snippets. 4. https://join-piano.hellosimply.com/ for practice piano.
 `;
 
 // Predefined questions for the chatbot
@@ -92,52 +94,55 @@ const SUGGESTED_QUESTIONS = [
   "What was your role at the Ministry of Defense?",
   "How do you balance work and family life?",
   "What technologies are you most excited about?",
-  "Tell me about your entrepreneurial experiences"
+  "Tell me about your entrepreneurial experiences",
 ];
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Add necessary middleware
   app.use(express.json());
-  
+
   // Endpoint to get usage statistics
   app.get("/api/chat/usage", (_req: Request, res: Response) => {
     const today = new Date().toDateString();
-    
+
     // Reset counter if it's a new day
     if (today !== requestCounter.date) {
       requestCounter = {
         count: 0,
-        date: today
+        date: today,
       };
     }
-    
+
     res.json({
       usage: requestCounter.count,
       limit: DAILY_REQUEST_LIMIT,
       remaining: Math.max(0, DAILY_REQUEST_LIMIT - requestCounter.count),
-      resetDate: requestCounter.date
+      resetDate: requestCounter.date,
     });
   });
-  
+
   // Chatbot API endpoint
   app.post("/api/chat", async (req: Request, res: Response) => {
     try {
       const { message } = req.body;
-      
+
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
       }
 
       // Log the incoming message
-      console.log(`[${new Date().toISOString()}] Chat message received: ${message}`);
-      
+      console.log(
+        `[${new Date().toISOString()}] Chat message received: ${message}`,
+      );
+
       // Check if we've hit the daily limit
       if (!checkRequestLimit()) {
-        return res.status(429).json({ 
-          error: "Daily chat limit reached", 
-          message: "The daily limit of 200 chat completions has been reached. Please try again tomorrow.",
+        return res.status(429).json({
+          error: "Daily chat limit reached",
+          message:
+            "The daily limit of 200 chat completions has been reached. Please try again tomorrow.",
           remaining: 0,
-          limit: DAILY_REQUEST_LIMIT
+          limit: DAILY_REQUEST_LIMIT,
         });
       }
 
@@ -160,7 +165,7 @@ Important instructions:
         model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: message }
+          { role: "user", content: message },
         ],
         temperature: 0.7,
         max_tokens: 300,
@@ -176,8 +181,8 @@ Important instructions:
         usage: {
           count: requestCounter.count,
           limit: DAILY_REQUEST_LIMIT,
-          remaining: DAILY_REQUEST_LIMIT - requestCounter.count
-        }
+          remaining: DAILY_REQUEST_LIMIT - requestCounter.count,
+        },
       });
     } catch (error) {
       console.error("Error in chat endpoint:", error);
@@ -190,10 +195,10 @@ Important instructions:
     // Get random suggested questions (3 of them)
     const shuffled = [...SUGGESTED_QUESTIONS].sort(() => 0.5 - Math.random());
     const suggestedQuestions = shuffled.slice(0, 3);
-    
+
     res.json({ suggestedQuestions });
   });
-  
+
   const httpServer = createServer(app);
   return httpServer;
 }
