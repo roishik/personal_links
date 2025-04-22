@@ -389,26 +389,36 @@ export default function ChatBot() {
 
                   {/* Input Area */}
                   <div className="p-3 border-t border-gray-200 bg-white">
-                    <div className="flex items-end gap-2">
-                      <Textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message..."
-                        className="min-h-[60px] resize-none"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) {
-                            e.preventDefault();
-                            handleSend();
-                          }
-                        }}
-                      />
-                      <Button
-                        onClick={handleSend}
-                        disabled={isLoading || !input.trim()}
-                        className="h-10 w-10 rounded-full p-0 flex-shrink-0"
-                      >
-                        <Send className="h-4 w-4" />
-                      </Button>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-end gap-2">
+                        <Textarea
+                          value={input}
+                          onChange={(e) => {
+                            const words = e.target.value.trim().split(/\s+/);
+                            if (words.length <= 50 || e.target.value.length < input.length) {
+                              setInput(e.target.value);
+                            }
+                          }}
+                          placeholder="Type your message... (max 50 words)"
+                          className="min-h-[60px] resize-none"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSend();
+                            }
+                          }}
+                        />
+                        <Button
+                          onClick={handleSend}
+                          disabled={isLoading || !input.trim()}
+                          className="h-10 w-10 rounded-full p-0 flex-shrink-0"
+                        >
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="text-xs text-gray-500 text-right">
+                        {input.trim().split(/\s+/).filter(word => word.length > 0).length}/50 words
+                      </div>
                     </div>
                   </div>
                 </>
