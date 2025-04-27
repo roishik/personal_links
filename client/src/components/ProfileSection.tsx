@@ -10,7 +10,7 @@ export default function ProfileSection() {
       transition={{ duration: 0.5 }}
     >
       <div className="relative w-32 h-32 mb-4">
-        <Avatar className="w-32 h-32 border-4 border-primary/20 shadow-lg">
+        <Avatar className="w-32 h-32 border-4 border-primary/20 shadow-lg cursor-cowboy">
           <AvatarImage
             src="https://raw.githubusercontent.com/roishik/personal_links/main/assets/my_photo.jpeg"
             alt="Roi Shik"
