@@ -58,7 +58,8 @@ export default function LinksContainer() {
             >
               <Button 
                 asChild
-                className="w-full h-full p-4 bg-card hover:shadow-md transition-all border border-gray-100"
+                variant="ghost"
+                className="w-full h-full p-4 bg-card hover:bg-card hover:shadow-md transition-all border border-gray-100"
               >
                 <a
                   href="https://ofekalkali.wordpress.com/"
@@ -82,7 +83,8 @@ export default function LinksContainer() {
             >
               <Button 
                 asChild
-                className="w-full h-full p-4 bg-card hover:shadow-md transition-all border border-gray-100"
+                variant="ghost"
+                className="w-full h-full p-4 bg-card hover:bg-card hover:shadow-md transition-all border border-gray-100"
               >
                 <a
                   href="https://fintechil.wordpress.com/"
