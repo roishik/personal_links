@@ -45,10 +45,10 @@ export default function ChatBot() {
   // Select a random profile image on component mount
   useEffect(() => {
     const images = [
-      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/cartoon_shik.png',
-      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/lego_shik.png',
-      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/origami_shik.png',
-      'https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/rick_morty_shik.png'
+      "https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/cartoon_shik.png",
+      "https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/lego_shik.png",
+      "https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/origami_shik.png",
+      "https://raw.githubusercontent.com/roishik/personal_links/main/assets/who_am_i/rick_morty_shik.png",
     ];
     const randomIndex = Math.floor(Math.random() * images.length);
     setProfileImage(images[randomIndex]);
@@ -395,11 +395,14 @@ export default function ChatBot() {
                           value={input}
                           onChange={(e) => {
                             const words = e.target.value.trim().split(/\s+/);
-                            if (words.length <= 50 || e.target.value.length < input.length) {
+                            if (
+                              words.length <= 50 ||
+                              e.target.value.length < input.length
+                            ) {
                               setInput(e.target.value);
                             }
                           }}
-                          placeholder="Type your message... (max 50 words)"
+                          placeholder="Type your message..."
                           className="min-h-[60px] resize-none"
                           onKeyDown={(e) => {
                             if (e.key === "Enter" && !e.shiftKey) {
@@ -417,7 +420,13 @@ export default function ChatBot() {
                         </Button>
                       </div>
                       <div className="text-xs text-gray-500 text-right">
-                        {input.trim().split(/\s+/).filter(word => word.length > 0).length}/50 words
+                        {
+                          input
+                            .trim()
+                            .split(/\s+/)
+                            .filter((word) => word.length > 0).length
+                        }
+                        /50 words
                       </div>
                     </div>
                   </div>
