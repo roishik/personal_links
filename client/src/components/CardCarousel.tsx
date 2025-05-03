@@ -42,7 +42,7 @@ const cardData: ProjectCard[] = [
     description: 'My M.Sc. thesis built a deep‑learning pipeline that pinpoints fatigue striations on SEM fracture images, shrinking fractographic analysis from days to minutes and releasing a unique hand‑labeled dataset on Kaggle that has since powered several follow‑up studies.',
     badge: 'Research',
     link: 'https://cadlab.net.technion.ac.il/roi-shikler-m-sc-thesis/',
-    image: 'https://cadlab.net.technion.ac.il/files/2019/06/RoiShikler_thesis_img1.png'
+    image: 'https://raw.githubusercontent.com/roishik/personal_links/main/attached_assets/image_1746304125421.png'
   },
   {
     id: 4,
