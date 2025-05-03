@@ -26,7 +26,7 @@ const cardData: ProjectCard[] = [
     description: 'By enabling regular customers to pre‑buy vouchers during COVID‑19 lockdowns, \'Locals\' generated thousands of purchases and funneled crucial revenue to small businesses when walk‑in trade was halted by restrictions.',
     badge: 'Innovation',
     link: 'https://bit.ly/localsynet',
-    image: 'https://i.imgur.com/tVXE4qv.jpg' // Using a public URL for image hosting
+    image: 'https://raw.githubusercontent.com/roishik/personal_links/main/attached_assets/image_1746302129094.png' // Using the GitHub hosted image
   },
   {
     id: 2,
