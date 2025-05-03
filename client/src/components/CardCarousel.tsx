@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink } from 'lucide-react';
@@ -124,9 +124,6 @@ const CardCarousel: FC = () => {
                   <CardContent className="flex-grow">
                     <CardDescription>{card.description}</CardDescription>
                   </CardContent>
-                  <CardFooter className="pt-2 border-t">
-                    <p className="text-xs text-muted-foreground">View details</p>
-                  </CardFooter>
                 </Card>
               </div>
             );
