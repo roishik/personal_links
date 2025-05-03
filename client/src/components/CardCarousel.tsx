@@ -44,13 +44,7 @@ const cardData: ProjectCard[] = [
     link: 'https://cadlab.net.technion.ac.il/roi-shikler-m-sc-thesis/',
     image: 'https://raw.githubusercontent.com/roishik/personal_links/main/attached_assets/image_1746304125421.png'
   },
-  {
-    id: 4,
-    title: 'Project Four',
-    description: 'A sample description for the fourth project',
-    badge: 'Development',
-    link: 'https://example.com/project4'
-  }
+
 ];
 
 const CardCarousel: FC = () => {
@@ -74,8 +68,14 @@ const CardCarousel: FC = () => {
     // Initial setup
     onSelect();
 
+    // Auto-scroll every 15 seconds
+    const autoScrollInterval = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 15000);
+
     return () => {
       emblaApi.off('select', onSelect);
+      clearInterval(autoScrollInterval);
     };
   }, [emblaApi]);
 
