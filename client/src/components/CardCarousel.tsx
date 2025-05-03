@@ -32,7 +32,7 @@ const cardData: ProjectCard[] = [
     id: 2,
     title: 'The first Hebrew NFT',
     description: 'Pardes Shmaryahu broke ground as the first Hebrew NFT collection, minting 200 collectible 3‑D orchard‑plot tokens that satirically echoed Israel\'s real‑estate bubble and introduced local audiences to the blockchain art scene.',
-    badge: 'Blockchain',
+    badge: 'Technology',
     link: 'https://www.ynet.co.il/digital/technews/article/sjdlp11spt',
     image: 'https://raw.githubusercontent.com/roishik/personal_links/main/attached_assets/image_1746303490026.png'
   },
