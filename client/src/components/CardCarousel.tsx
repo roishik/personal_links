@@ -38,10 +38,11 @@ const cardData: ProjectCard[] = [
   },
   {
     id: 3,
-    title: 'Project Three',
-    description: 'A sample description for the third project',
-    badge: 'Innovation',
-    link: 'https://example.com/project3'
+    title: 'My M.Sc. thesis',
+    description: 'My M.Sc. thesis built a deep‑learning pipeline that pinpoints fatigue striations on SEM fracture images, shrinking fractographic analysis from days to minutes and releasing a unique hand‑labeled dataset on Kaggle that has since powered several follow‑up studies.',
+    badge: 'Research',
+    link: 'https://cadlab.net.technion.ac.il/roi-shikler-m-sc-thesis/',
+    image: 'https://cadlab.net.technion.ac.il/files/2019/06/RoiShikler_thesis_img1.png'
   },
   {
     id: 4,
