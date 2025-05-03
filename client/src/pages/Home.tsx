@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import ProfileSection from "@/components/ProfileSection";
 import LinksContainer from "@/components/LinksContainer";
 import ChatBot from "@/components/ChatBot";
+import CardCarousel from "@/components/CardCarousel";
 
 export default function Home() {
   return (
@@ -18,6 +19,11 @@ export default function Home() {
         </div>
         <div className="max-w-md mx-auto">
           <LinksContainer />
+        </div>
+        
+        {/* Card Carousel */}
+        <div className="mt-16">
+          <CardCarousel />
         </div>
       </div>
       
