@@ -7,14 +7,26 @@ import { motion } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import { cn } from '@/lib/utils';
 
-// Generic Card data for testing
-const cardData = [
+// Using direct URL for images to avoid import issues
+
+// Project data
+interface ProjectCard {
+  id: number;
+  title: string;
+  description: string;
+  badge: string;
+  link: string;
+  image?: string;
+}
+
+const cardData: ProjectCard[] = [
   {
     id: 1,
-    title: 'Project One',
-    description: 'A sample description for the first project',
-    badge: 'Technology',
-    link: 'https://example.com/project1'
+    title: 'Locals app',
+    description: 'By enabling regular customers to pre‑buy vouchers during COVID‑19 lockdowns, \'Locals\' generated thousands of purchases and funneled crucial revenue to small businesses when walk‑in trade was halted by restrictions.',
+    badge: 'Innovation',
+    link: 'https://bit.ly/localsynet',
+    image: 'https://i.imgur.com/tVXE4qv.jpg' // Using a public URL for image hosting
   },
   {
     id: 2,
@@ -85,7 +97,16 @@ const CardCarousel: FC = () => {
                   isCenter ? 'opacity-100 scale-100' : 'opacity-60 scale-95'
                 )}
               >
-                <Card className="h-full flex flex-col transition-all duration-300 shadow-md">
+                <Card className="h-full flex flex-col transition-all duration-300 shadow-md overflow-hidden">
+                  {card.image && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={card.image} 
+                        alt={`${card.title} preview`} 
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </div>
+                  )}
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <Badge variant="outline" className="mb-2">{card.badge}</Badge>
