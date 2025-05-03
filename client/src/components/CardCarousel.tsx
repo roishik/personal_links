@@ -70,7 +70,12 @@ const CardCarousel: FC = () => {
 
     // Auto-scroll every 15 seconds
     const autoScrollInterval = setInterval(() => {
-      emblaApi.scrollNext();
+      if (emblaApi.canScrollNext()) {
+        emblaApi.scrollNext();
+      } else {
+        // If we're at the last slide, explicitly loop back to the first slide
+        emblaApi.scrollTo(0);
+      }
     }, 15000);
 
     return () => {
