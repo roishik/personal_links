@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useRef, useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
+import { cn } from '@/lib/utils';
 
 // Generic Card data for testing
 const cardData = [
@@ -38,20 +40,52 @@ const cardData = [
 ];
 
 const CardCarousel: FC = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: 'center',
+    containScroll: 'trimSnaps',
+    dragFree: true
+  });
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on('select', onSelect);
+    // Initial setup
+    onSelect();
+
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
+
   return (
     <motion.div 
-      className="w-full max-w-4xl mx-auto py-10" 
+      className="w-full max-w-5xl mx-auto py-10" 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <h2 className="text-2xl font-bold text-center mb-6">Featured Projects</h2>
-      <Carousel className="w-full">
-        <CarouselContent>
-          {cardData.map((card) => (
-            <CarouselItem key={card.id} className="md:basis-1/2 lg:basis-1/3 pl-4">
-              <div className="p-1 h-full">
-                <Card className="h-full flex flex-col">
+      
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {cardData.map((card, index) => {
+            const isCenter = index === selectedIndex;
+            return (
+              <div 
+                key={card.id} 
+                className={cn("flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_40%] min-w-0 px-4 transition-opacity duration-300",
+                  isCenter ? 'opacity-100 scale-100' : 'opacity-60 scale-95'
+                )}
+              >
+                <Card className="h-full flex flex-col transition-all duration-300 shadow-md">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <Badge variant="outline" className="mb-2">{card.badge}</Badge>
@@ -74,14 +108,31 @@ const CardCarousel: FC = () => {
                   </CardFooter>
                 </Card>
               </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <div className="flex justify-center mt-4 space-x-2">
-          <CarouselPrevious className="static translate-y-0 translate-x-0" />
-          <CarouselNext className="static translate-y-0 translate-x-0" />
+            );
+          })}
         </div>
-      </Carousel>
+      </div>
+      
+      <div className="flex justify-center mt-6 space-x-4">
+        <button 
+          onClick={() => emblaApi?.scrollPrev()} 
+          className="p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors"
+          aria-label="Previous slide"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+        <button 
+          onClick={() => emblaApi?.scrollNext()} 
+          className="p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors"
+          aria-label="Next slide"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
     </motion.div>
   );
 };
