@@ -89,12 +89,13 @@ const SUGGESTED_QUESTIONS = [
   "What did you study at university?",
   "What's your experience with AI?",
   "Tell me about your family",
-  "What are your hobbies?",
   "What are your professional goals?",
   "What was your role at the Ministry of Defense?",
   "How do you balance work and family life?",
   "What technologies are you most excited about?",
   "Tell me about your entrepreneurial experiences",
+  "What are your hobbies?",
+  "What are you doing in Mobileye?",
 ];
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -140,7 +141,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(429).json({
           error: "Daily chat limit reached",
           message:
-            "The daily limit of 200 chat completions has been reached. Please try again tomorrow.",
+            "The daily limit for chat messages has been reached. Please try again tomorrow.",
           remaining: 0,
           limit: DAILY_REQUEST_LIMIT,
         });
