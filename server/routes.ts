@@ -125,7 +125,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Chatbot API endpoint
   app.post("/api/chat", async (req: Request, res: Response) => {
     try {
-      const { message } = req.body;
+      // Get conversation history from request body
+      const { message, history = [] } = req.body;
 
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
@@ -162,9 +163,6 @@ Important instructions:
 7. Don't invent information not provided in your background.
 8. Maintain a friendly, thoughtful tone consistent with a product leader/engineer.
 `;
-
-      // Get conversation history from request body
-      const { message, history = [] } = req.body;
 
       // Build messages array with history
       const messages = [
