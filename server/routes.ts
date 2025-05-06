@@ -163,12 +163,19 @@ Important instructions:
 8. Maintain a friendly, thoughtful tone consistent with a product leader/engineer.
 `;
 
+      // Get conversation history from request body
+      const { message, history = [] } = req.body;
+
+      // Build messages array with history
+      const messages = [
+        { role: "system", content: systemPrompt },
+        ...history,
+        { role: "user", content: message },
+      ];
+
       const response = await openai.chat.completions.create({
-        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: message },
-        ],
+        model: "gpt-4o",
+        messages,
         temperature: 0.7,
         max_tokens: 300,
       });

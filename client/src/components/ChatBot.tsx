@@ -96,12 +96,21 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
+      // Convert messages to OpenAI format
+      const history = messages.map(msg => ({
+        role: msg.isUser ? "user" : "assistant",
+        content: msg.content
+      }));
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: userMessage.content }),
+        body: JSON.stringify({ 
+          message: userMessage.content,
+          history 
+        }),
       });
 
       const data = await response.json();
