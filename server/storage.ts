@@ -1,7 +1,15 @@
-import { users, type User, type InsertUser } from "@shared/schema";
 
-// modify the interface with any CRUD methods
-// you might need
+// Simple in-memory storage for users
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+}
+
+export interface InsertUser {
+  username: string;
+  password: string;
+}
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
