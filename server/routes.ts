@@ -102,6 +102,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Add necessary middleware
   app.use(express.json());
 
+  // Health check endpoint for GCP
+  app.get("/api/health", (_req: Request, res: Response) => {
+    res.json({ 
+      status: "healthy", 
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || "development"
+    });
+  });
+
   // Endpoint to get usage statistics
   app.get("/api/chat/usage", (_req: Request, res: Response) => {
     const today = new Date().toDateString();
