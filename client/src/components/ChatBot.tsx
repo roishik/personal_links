@@ -191,13 +191,13 @@ export default function ChatBot() {
     <>
       {/* Chat Button with curved text */}
       <motion.div
-        className="fixed bottom-4 right-4 z-50"
+        className="fixed z-50 chat-button-mobile sm:bottom-4 sm:right-4"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
         whileHover={{ scale: 1.05 }}
       >
-        <div className="relative w-36 h-36 flex items-center justify-center">
+        <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
           {/* Curved "Chat with me!" text */}
           <svg className="absolute w-full h-full" viewBox="0 0 100 100">
             <defs>
@@ -253,7 +253,7 @@ export default function ChatBot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-4 z-50 w-96 md:w-[30rem]"
+            className="fixed z-50 chat-panel-mobile sm:bottom-24 sm:right-4 w-80 sm:w-96 md:w-[30rem]"
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
