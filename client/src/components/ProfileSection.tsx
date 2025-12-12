@@ -12,7 +12,7 @@ export default function ProfileSection() {
       <div className="relative w-32 h-32 mb-4">
         <Avatar className="w-32 h-32 border-4 border-primary/20 shadow-lg cursor-cowboy">
           <AvatarImage
-            src="https://raw.githubusercontent.com/roishik/personal_links/main/assets/my_photo.jpeg"
+            src="/roi_shikler.png"
             alt="Roi Shik"
           />
           <AvatarFallback>RS</AvatarFallback>

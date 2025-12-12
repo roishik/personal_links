@@ -54,7 +54,7 @@ function checkRequestLimit(): boolean {
 
 // Load Roi's personal information
 const ROI_INFO = `
-Roi Shikler is an accomplished product leader, deep technology enthusiast, and former military engineer with a career spanning cutting-edge AI applications, defense-grade R&D, and real-world product delivery in autonomous systems. He currently serves as an Algo Product Manager at Mobileye, where he leads the product suite of parking technologies across both ADAS (Advanced Driver Assistance Systems) and AV (Autonomous Vehicle) domains. Roi oversees in-production systems as well as future offerings, acting as the central interface between internal teams and external partners. His role involves high-frequency interaction with global automotive customers, running product demonstrations, and driving roadmap alignment across technical and business layers.
+Roi Shikler is an accomplished product leader, deep technology enthusiast, and former military engineer with a career spanning cutting-edge AI applications, defense-grade R&D, and real-world product delivery in autonomous systems. Since October 2025, he serves as a Senior AI Product Manager at a stealth startup that raised a significant seed round. The startup is building AI infrastructure to enable agent collaboration. Roi oversees the SDK and integrations to outside products, working closely with AI in his day-to-day work. His go-to tools include GitHub, Claude Code, Cursor, Obsidian, and Linear. Prior to this role, Roi was an Algo Product Manager at Mobileye (until October 2025), where he led the product suite of parking technologies across both ADAS (Advanced Driver Assistance Systems) and AV (Autonomous Vehicle) domains. At Mobileye, Roi oversaw in-production systems as well as future offerings, acting as the central interface between internal teams and external partners. His role involved high-frequency interaction with global automotive customers, running product demonstrations, and driving roadmap alignment across technical and business layers.
 
 Roi brings a multidisciplinary background in AI research, mechanical engineering, and strategic technology development. His professional foundation was built during an impactful tenure in the Israeli Ministry of Defense, particularly in the Directorate of Defense Research & Development (DDR&D, also known as MAFAT). As a Senior R&D Project Manager, he led major innovation efforts at the national level, delivering complex projects that required multi-year planning, deep cross-organizational collaboration, and integration of advanced AI capabilities into sensitive systems. His contributions included both hardware and software initiatives and were carried out in close coordination with military stakeholders and international partners.
 
@@ -80,7 +80,7 @@ In his personal life, Roi is married to Dr. Aya Bardugo, a physician and researc
 
 He is also an avid traveler, gym-goer, and both indoor and outdoor climber. Roi's long-term vision includes either founding a startup, growing into senior leadership in tech, or potentially taking a role in the public sector to influence policy through data-driven decision-making. Whatever the path, he is committed to staying at the edge of innovation and using his skills to make a meaningful difference.
 
-Some of Roi's favorate tools: 1. https://rightnow.finance/ for stock analysis and deep insights. 2. https://www.notion.com/ for note-taking and project management. 3. chatGPT.com for quick answers and code snippets. 4. https://join-piano.hellosimply.com/ for practice piano. replit.com and cursor for vibe coding.
+Some of Roi's favorite tools: 1. GitHub for code collaboration. 2. Claude Code and Cursor for AI-assisted coding and vibe coding. 3. Obsidian for note-taking and knowledge management. 4. Linear for project management. 5. ChatGPT for quick answers. 6. https://join-piano.hellosimply.com/ for practicing piano. Note: Roi used to love https://rightnow.finance/ for stock analysis and deep insights, but sadly the app was shut down. He's quite sad about it and is actively looking for a replacement.
 `;
 
 // Predefined questions for the chatbot
@@ -95,7 +95,9 @@ const SUGGESTED_QUESTIONS = [
   "What technologies are you most excited about?",
   "Tell me about your entrepreneurial experiences",
   "What are your hobbies?",
-  "What are you doing in Mobileye?",
+  "What do you do at your current startup?",
+  "What tools do you use daily?",
+  "What did you do at Mobileye?",
 ];
 
 export async function registerRoutes(app: Express): Promise<Server> {
