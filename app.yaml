@@ -1,3 +1,6 @@
+includes:
+  - env_variables.yaml
+
 runtime: nodejs20
 env: standard
 
@@ -6,22 +9,9 @@ instance_class: F1
 automatic_scaling:
   target_cpu_utilization: 0.65
   min_instances: 0
-  max_instances: 10
+  max_instances: 2
 
 env_variables:
   NODE_ENV: "production"
 
-handlers:
-  - url: /api/.*
-    script: auto
-    secure: always
-
-  - url: /.*
-    static_files: dist/public/index.html
-    upload: dist/public/index.html
-    secure: always
-
-  - url: /(.*\..*)$
-    static_files: dist/public/\1
-    upload: dist/public/(.*\..*)$
-    secure: always 
+entrypoint: node dist/index.js

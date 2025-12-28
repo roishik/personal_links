@@ -6,6 +6,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Redirect www to non-www (301 permanent redirect)
+app.use((req, res, next) => {
+  const host = req.get('host') || '';
+  if (host.startsWith('www.')) {
+    const newHost = host.slice(4);
+    return res.redirect(301, `https://${newHost}${req.originalUrl}`);
+  }
+  next();
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
