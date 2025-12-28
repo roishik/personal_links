@@ -167,9 +167,9 @@ export default function InteractivePortrait() {
         }}
       >
         <h2
-          className="text-2xl font-bold tracking-wide mix-blend-difference text-white drop-shadow-lg transition-all duration-300"
+          className="text-2xl font-bold tracking-wide text-white transition-all duration-300"
           style={{
-            textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+            textShadow: "0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)",
           }}
         >
           Roi Shikler
