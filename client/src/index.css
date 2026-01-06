@@ -36,38 +36,38 @@
 }
 
 @layer components {
-  /* Mobile-optimized chat button positioning */
+  /* Mobile-optimized chat button positioning - 1.5x size */
   .chat-button-mobile {
-    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    right: 1rem;
+    bottom: calc(-1rem + env(safe-area-inset-bottom, 0px));
+    right: -1rem;
   }
-  
+
   /* Ensure chat button doesn't go off screen on very small devices */
   @media (max-width: 400px) {
     .chat-button-mobile {
-      right: 0.5rem;
-      bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+      right: -1.5rem;
+      bottom: calc(-1.5rem + env(safe-area-inset-bottom, 0px));
     }
   }
-  
-  /* Mobile-optimized chat panel positioning */
+
+  /* Mobile-optimized chat panel positioning - adjusted for 1.5x button */
   .chat-panel-mobile {
-    bottom: calc(9rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(11rem + env(safe-area-inset-bottom, 0px));
     right: 1rem;
     left: 1rem;
     max-width: none;
     width: auto;
   }
-  
+
   /* Ensure chat panel fits on very small screens */
   @media (max-width: 400px) {
     .chat-panel-mobile {
       right: 0.5rem;
       left: 0.5rem;
-      bottom: calc(8.5rem + env(safe-area-inset-bottom, 0px));
+      bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
     }
   }
-  
+
   /* For larger screens, use right-aligned positioning */
   @media (min-width: 640px) {
     .chat-panel-mobile {

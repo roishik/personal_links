@@ -32,6 +32,32 @@ interface SuggestedQuestionsResponse {
   suggestedQuestions: string[];
 }
 
+// Animation variants for the blob
+const blobAnimations = {
+  jump: {
+    y: [0, -20, 0],
+    transition: { duration: 0.5, ease: "easeInOut" }
+  },
+  wiggle: {
+    rotate: [0, -10, 10, -10, 10, 0],
+    transition: { duration: 0.6, ease: "easeInOut" }
+  },
+  pulse: {
+    scale: [1, 1.1, 1],
+    transition: { duration: 0.5, ease: "easeInOut" }
+  },
+  bounce: {
+    y: [0, -15, 0, -8, 0],
+    transition: { duration: 0.7, ease: "easeOut" }
+  },
+  tilt: {
+    rotate: [0, 15, -15, 0],
+    transition: { duration: 0.8, ease: "easeInOut" }
+  }
+};
+
+const animationKeys = Object.keys(blobAnimations) as (keyof typeof blobAnimations)[];
+
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -41,8 +67,35 @@ export default function ChatBot() {
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
   const [profileImage, setProfileImage] = useState<string>("");
   const [conversationId, setConversationId] = useState<number | null>(null);
+  const [currentAnimation, setCurrentAnimation] = useState<keyof typeof blobAnimations | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Animation interval - triggers random animation every 7 seconds when chat is closed
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentAnimation(null);
+      return;
+    }
+
+    const triggerAnimation = () => {
+      const randomIndex = Math.floor(Math.random() * animationKeys.length);
+      setCurrentAnimation(animationKeys[randomIndex]);
+      // Reset animation after it completes
+      setTimeout(() => setCurrentAnimation(null), 1000);
+    };
+
+    // Initial animation after a short delay
+    const initialTimeout = setTimeout(triggerAnimation, 2000);
+
+    // Recurring animation every 7 seconds
+    const interval = setInterval(triggerAnimation, 7000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [isOpen]);
 
   // Select a random profile image on component mount
   useEffect(() => {
@@ -205,11 +258,11 @@ export default function ChatBot() {
       <motion.div
         className="fixed z-50 chat-button-mobile sm:bottom-4 sm:right-4"
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={currentAnimation ? blobAnimations[currentAnimation] : { opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
         whileHover={{ scale: 1.05 }}
       >
-        <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
+        <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
           {/* Curved "Chat with me!" text */}
           <svg className="absolute w-full h-full" viewBox="0 0 100 100">
             <defs>
@@ -245,7 +298,7 @@ export default function ChatBot() {
           {/* The circular button with profile image */}
           <Button
             onClick={toggleChat}
-            className="w-20 h-20 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white relative z-10"
+            className="w-28 h-28 rounded-full shadow-lg flex items-center justify-center p-0 overflow-hidden bg-white hover:bg-white relative z-10"
           >
             {profileImage ? (
               <Avatar className="w-full h-full">
@@ -255,7 +308,7 @@ export default function ChatBot() {
                 </AvatarFallback>
               </Avatar>
             ) : (
-              <MessageCircle className="h-6 w-6 text-primary" />
+              <MessageCircle className="h-8 w-8 text-primary" />
             )}
           </Button>
         </div>
@@ -265,7 +318,7 @@ export default function ChatBot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed z-50 chat-panel-mobile sm:bottom-24 sm:right-4 w-80 sm:w-96 md:w-[30rem]"
+            className="fixed z-50 chat-panel-mobile sm:bottom-56 sm:right-4 w-80 sm:w-96 md:w-[30rem]"
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
