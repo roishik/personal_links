@@ -2,11 +2,11 @@ steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/personal-links', '.']
-  
+
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/personal-links']
-  
+
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
@@ -23,6 +23,10 @@ steps:
       - '--allow-unauthenticated'
       - '--port'
       - '8080'
+      - '--set-secrets'
+      - 'OPENAI_API_KEY=OPENAI_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,SESSION_SECRET=SESSION_SECRET:latest'
+      - '--set-env-vars'
+      - 'ALLOWED_ADMIN_EMAILS=roishik10@gmail.com,GOOGLE_CALLBACK_URL=https://roishikler.com/api/auth/google/callback'
 
 images:
   - 'gcr.io/$PROJECT_ID/personal-links' 

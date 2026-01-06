@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
+import { trackLinkClick } from "@/lib/analytics";
 
 interface LinkCardProps {
   href: string;
@@ -22,6 +23,11 @@ export default function LinkCard({
   iconBgColor = "bg-gray-100",
   showArrow = false
 }: LinkCardProps) {
+  const handleClick = () => {
+    // Track the click (fire-and-forget, doesn't block navigation)
+    trackLinkClick(label, href);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -29,15 +35,16 @@ export default function LinkCard({
       transition={{ delay, duration: 0.5 }}
       whileHover={{ y: -3 }}
     >
-      <Card 
+      <Card
         className={`hover:shadow-md transition-all ${className}`}
         asChild={true}
       >
-        <a 
+        <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
           className="p-4 flex items-center justify-between"
+          onClick={handleClick}
         >
           <div className="flex items-center">
             <div className={`w-10 h-10 ${iconBgColor} rounded-full flex items-center justify-center mr-3`}>

@@ -25,6 +25,7 @@ interface ChatResponse {
   response: string;
   suggestedQuestions: string[];
   usage?: UsageInfo;
+  conversationId?: number;
 }
 
 interface SuggestedQuestionsResponse {
@@ -39,6 +40,7 @@ export default function ChatBot() {
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
   const [profileImage, setProfileImage] = useState<string>("");
+  const [conversationId, setConversationId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -102,14 +104,19 @@ export default function ChatBot() {
         content: msg.content
       }));
 
+      // Get session ID from storage
+      const sessionId = sessionStorage.getItem('analytics_session_id');
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: userMessage.content,
-          history 
+          history,
+          sessionId,
+          conversationId,
         }),
       });
 
@@ -137,6 +144,11 @@ export default function ChatBot() {
       }
 
       const chatData = data as ChatResponse;
+
+      // Save conversation ID for future messages
+      if (chatData.conversationId) {
+        setConversationId(chatData.conversationId);
+      }
 
       const roiMessage: Message = {
         id: (Date.now() + 1).toString(),

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic, log } from "./static";
@@ -71,7 +72,7 @@ app.use((req, res, next) => {
   }
 
   // Use PORT environment variable for GCP compatibility
-  const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 3000;
   server.listen({
     port,
     host: "0.0.0.0",

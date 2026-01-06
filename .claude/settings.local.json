@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run check:*)",
+      "Bash(npm run build:*)",
+      "Bash(pkill:*)",
+      "Bash(curl:*)",
+      "Bash(gcloud services enable:*)",
+      "Bash(gcloud secrets add-iam-policy-binding:*)",
+      "Bash(gcloud builds submit:*)",
+      "Bash(gcloud beta run domain-mappings list:*)",
+      "Bash(gcloud run services:*)",
+      "Bash(dig:*)",
+      "Bash(gcloud firebase hosting sites list:*)",
+      "Bash(gcloud compute url-maps list:*)",
+      "Bash(gcloud beta run domain-mappings create:*)",
+      "Bash(gcloud components install:*)",
+      "Bash(gcloud beta run domain-mappings describe:*)"
+    ]
+  }
+}
