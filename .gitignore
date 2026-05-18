@@ -7,3 +7,5 @@ vite.config.ts.*
 .env
 .env.*
 env_variables.yaml
+.a5c/
+.claude/
