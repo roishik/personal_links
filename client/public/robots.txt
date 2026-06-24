@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# AI agents: a machine-readable summary of Roi Shikler is at /llms.txt

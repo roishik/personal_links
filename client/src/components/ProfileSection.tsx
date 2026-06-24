@@ -13,10 +13,11 @@ export default function ProfileSection() {
         <InteractivePortrait />
       </div>
       <p className="text-gray-600 text-center max-w-xl mb-6 leading-relaxed">
-        Engineer by training, product manager by profession. I'm driven by
-        curiosity - especially around engineering, artificial intelligence, and
-        everything in between. This page is a hub for my professional links and
-        thoughts on the technologies shaping our future.
+        Engineer by training, product manager by profession. Founder of ROαI, my
+        independent AI product &amp; consulting practice — I help businesses adopt AI
+        and automation, and help startups modernize product management for the AI
+        era. This page is a hub for my professional links and thoughts on the
+        technologies shaping our future.
       </p>
     </motion.div>
   );
