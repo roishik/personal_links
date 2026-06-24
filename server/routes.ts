@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
+import { randomUUID } from "crypto";
 import OpenAI from "openai";
 import { eq, desc, sql, gte, count } from "drizzle-orm";
 
@@ -15,6 +16,7 @@ import {
   linkClicks,
   chatConversations,
   chatMessages,
+  feedbackThoughts,
 } from "../shared/schema";
 
 // Utility imports
@@ -72,9 +74,9 @@ function checkRequestLimit(): boolean {
 
 // Load Roi's personal information
 const ROI_INFO = `
-Roi Shikler was born in July 1993. He is an accomplished product leader, deep technology enthusiast, and former military engineer with a career spanning cutting-edge AI applications, defense-grade R&D, and real-world product delivery in autonomous systems. Since June 2026, Roi is the founder of ROαI — his independent AI product and consulting practice. The name ROαI combines "ROI" (return on investment), his own name (Roi), and "AI". Through ROαI he helps small and medium businesses (SMBs) implement AI and automations across their systems, and helps startups transform their product-management practices for the AI era. Current engagements include Resty, an AI phone receptionist ("Shiri") for Israeli restaurants that answers calls and books tables, and an AI-enablement project with an accounting firm where he trains employees to use Claude and builds AI automations for them. His go-to tools include GitHub, Claude Code, Cursor, Obsidian, and Linear. From October 2025 to June 2026, Roi was a Senior AI Product Manager at Band (band.ai), an AI infrastructure startup that raised a significant seed round. Band provides a shared operational layer for multi-agent systems: it gives agents persistent identity, structured memory, cross-framework coordination, and a unified audit trail, so teams running agents on different frameworks (LangGraph, CrewAI, Anthropic, OpenAI, and others) can collaborate without changing their existing runtimes. At Band he oversaw the SDK and integrations to outside products, working closely with AI in his day-to-day work. Prior to Band, Roi was an Algo Product Manager at Mobileye (until October 2025), where he led the product suite of parking technologies across both ADAS (Advanced Driver Assistance Systems) and AV (Autonomous Vehicle) domains. At Mobileye, Roi oversaw in-production systems as well as future offerings, acting as the central interface between internal teams and external partners. His role involved high-frequency interaction with global automotive customers, running product demonstrations, and driving roadmap alignment across technical and business layers.
+Roi Shikler was born in July 1993. He is an AI-first product leader, deep technology enthusiast, and former military engineer with a career spanning cutting-edge AI applications, defense-grade R&D, and real-world product delivery in autonomous systems. He is an engineer and researcher turned product manager who specializes in taking complex B2B AI platforms from 0→1 at early-stage startups, and he genuinely loves the 0→1 environment — the ambiguity, the speed, and building something from nothing. He pairs deep technical fluency (APIs, cloud, AI/ML) with end-to-end product ownership, from discovery and customer engagement through GTM launch, bridging Engineering, Design, and business to drive adoption and scale. Since June 2026, Roi is the founder of ROaI — his independent AI product and consulting practice. The name ROaI combines "ROI" (return on investment), his own name (Roi), and "AI". Through ROaI he helps small and medium businesses (SMBs) implement AI and automations across their systems, and helps startups transform their product-management practices for the AI era. Current engagements include Resty, an AI phone receptionist ("Shiri") for Israeli restaurants that answers calls and books tables, and an AI-enablement project with an accounting firm where he trains employees to use Claude and builds AI automations for them. His go-to tools include GitHub, Claude Code, Cursor, Obsidian, and Linear. From October 2025 to June 2026, Roi was a Senior AI Product Manager at Band (band.ai), an AI infrastructure startup that raised a significant seed round. Band provides a shared operational layer for multi-agent systems: it gives agents persistent identity, structured memory, cross-framework coordination, and a unified audit trail, so teams running agents on different frameworks (LangGraph, CrewAI, Anthropic, OpenAI, and others) can collaborate without changing their existing runtimes. As a founding-team Senior AI Product Manager, Roi led 0→1 product strategy and GTM execution, taking the secure platform from zero to its first paying enterprise customers across both PLG (product-led growth) and direct sales. He owned the full product lifecycle — discovery, customer engagement, PRD, launch, and adoption — and was hands-on technically: he built the Python and TypeScript SDKs, the developer-console UI/UX, an open-source MCP server, and all the technical documentation, and shipped 16 integrations with leading agent frameworks (LangGraph, CrewAI, PydanticAI) across REST APIs, WebSocket, and multi-agent pipelines. Prior to Band, Roi was an Algo Product Manager in Mobileye's AV department (2023–2025, until October 2025), where he owned product for three algorithmic R&D teams across the autonomous-parking stack — classic computer vision, hybrid CV + deep learning, and end-to-end neural pipelines — spanning both ADAS (Advanced Driver Assistance Systems) and AV (Autonomous Vehicle) domains. He established KPIs, evaluation criteria, and benchmarks across the teams, turning real-world performance data into disciplined release decisions. He led customer-facing technical validation with global automakers including Zeekr, VW, Stellantis, Ford, Audi, GM, BMW, and Mahindra, engaging enterprise customers from problem framing through deployment, running product demonstrations, and driving roadmap alignment across technical and business layers.
 
-Roi brings a multidisciplinary background in AI research, mechanical engineering, and strategic technology development. His professional foundation was built during an impactful tenure in the Israeli Ministry of Defense, particularly in the Directorate of Defense Research & Development (DDR&D, also known as MAFAT). As a Senior R&D Project Manager, he led major innovation efforts at the national level, delivering complex projects that required multi-year planning, deep cross-organizational collaboration, and integration of advanced AI capabilities into sensitive systems. His contributions included both hardware and software initiatives and were carried out in close coordination with military stakeholders and international partners.
+Roi brings a multidisciplinary background in AI research, mechanical engineering, and strategic technology development. His professional foundation was built during an impactful tenure in the Israeli Ministry of Defense, particularly in the Directorate of Defense Research & Development (DDR&D, also known as MAFAT). As a product owner / Senior R&D Project Manager (2022–2023), he owned product for complex hardware-and-software AI and signal-processing R&D systems in a high-stakes, regulated environment. He shaped multi-year roadmaps across an ecosystem spanning government, industry, and academia — the Technion and Tel Aviv University, primes such as Elbit and Rafael, and startups such as Prisma Photonics — delivering complex projects that required deep cross-organizational collaboration and the integration of advanced AI capabilities into sensitive systems, in close coordination with military stakeholders and international partners.
 
 Prior to that, Roi served in the Israeli Air Force, where his career evolved from diagnostic engineering to AI research. As a Diagnostic Researcher, he investigated mechanical failures in aircraft, playing a direct role in enhancing flight safety through root-cause analysis and corrective implementation. He later transitioned into a Data Science Researcher role within the OFEK 324 unit, where he led machine learning and deep learning deployments, translated operational pain points into ML solutions, and embedded predictive models into daily military operations. His work in classifying airborne objects significantly contributed to national security and operational awareness, particularly during the 2023–2025 regional conflicts.
 
@@ -82,7 +84,7 @@ In parallel to his full-time roles, Roi also completed a 70-day reserve duty mis
 
 Roi holds both a Bachelor and Master of Science from the Technion – Israel Institute of Technology, both completed as part of the elite "Brakim" program. His BSc was in Mechanical Engineering, specializing in robotics and simulation. His Master's research focused on computer vision and deep learning applied to fractographic image analysis using scanning electron microscopy. He independently created a labeled image dataset used by other researchers, and his thesis remains archived in the Technion library. Roi is currently pursuing an MBA at Tel Aviv University in the international Deep Tech program.
 
-Roi is active in Israel's deep-tech community. He heads XCELERATE, the entrepreneurship branch of XMAFAT — the alumni organization of MAFAT / DDR&D (xmafat.org) — and he is the founder and head of the Brakim alumni organization.
+Roi is deeply active in Israel's deep-tech community and loves leading and building communities. He heads XCELERATE, the entrepreneurship branch of XMAFAT — the alumni organization of MAFAT / DDR&D (xmafat.org) — where he builds programs with VCs and government partners for veteran founders. He is also the founder and head of the Brakim alumni organization, and mentors Technion students and early-career engineers through 10Give, the Technion mentoring program.
 
 Roi is also an entrepreneur at heart. In 2023, he co-founded a stealth-stage startup in the business intelligence space, where he served as CTO. Though he chose to step away early in the process, the experience refined his understanding of product-market fit, founder dynamics, and the importance of aligning team needs with individual strengths. In the past, Roi developed several technology-driven side projects, including:
 
@@ -115,7 +117,7 @@ const SUGGESTED_QUESTIONS = [
   "What technologies are you most excited about?",
   "Tell me about your entrepreneurial experiences",
   "What are your hobbies?",
-  "What is ROαI and what do you do there?",
+  "What is ROaI and what do you do there?",
   "How can you help my business with AI?",
   "What did you do at Band?",
   "What tools do you use daily?",
@@ -265,6 +267,212 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to record click" });
     }
   });
+
+  // ============================================
+  // FEEDBACK ENDPOINTS (anonymous public submit + protected admin read)
+  // ============================================
+
+  // Per-IP submit limiter — used only ephemerally in memory. Never persisted.
+  const FEEDBACK_DAILY_LIMIT_PER_IP = 5;
+  const FEEDBACK_MAX_THOUGHTS = 60;
+  const FEEDBACK_MAX_CONTENT_CHARS = 5000;
+  const ALLOWED_SECTIONS = new Set(["start", "stop", "continue", "extra"]);
+  const feedbackSubmitCounter = new Map<string, { count: number; date: string }>();
+
+  function checkFeedbackLimit(ip: string): boolean {
+    const today = new Date().toDateString();
+    const entry = feedbackSubmitCounter.get(ip);
+    if (!entry || entry.date !== today) {
+      feedbackSubmitCounter.set(ip, { count: 1, date: today });
+      return true;
+    }
+    if (entry.count >= FEEDBACK_DAILY_LIMIT_PER_IP) return false;
+    entry.count += 1;
+    return true;
+  }
+
+  // POST /api/feedback - submit one anonymous farewell-feedback batch.
+  // Body: { thoughts: [{ section, content }], campaign?: string }
+  // Never stores IP / UA / fingerprint. Never logs submitted text.
+  app.post("/api/feedback", async (req: Request, res: Response) => {
+    if (!db) {
+      return res
+        .status(503)
+        .json({ error: "Submissions are temporarily unavailable" });
+    }
+
+    // Ephemeral IP check for rate limiting only. Not stored.
+    const ip =
+      (req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0]?.trim() ||
+      req.socket.remoteAddress ||
+      "0.0.0.0";
+    if (!checkFeedbackLimit(ip)) {
+      return res.status(429).json({
+        error:
+          "You've already sent a few notes today. Thank you — please come back tomorrow if you have more.",
+      });
+    }
+
+    try {
+      const { thoughts, campaign } = req.body as {
+        thoughts?: Array<{ section?: string; content?: string }>;
+        campaign?: string;
+      };
+
+      if (!Array.isArray(thoughts) || thoughts.length === 0) {
+        return res.status(400).json({ error: "No thoughts provided" });
+      }
+      if (thoughts.length > FEEDBACK_MAX_THOUGHTS) {
+        return res
+          .status(400)
+          .json({ error: "Too many thoughts in a single submission" });
+      }
+
+      const submissionId = randomUUID();
+      const campaignName =
+        typeof campaign === "string" && campaign.length > 0 && campaign.length <= 50
+          ? campaign
+          : "band-2026";
+
+      // Group by section to compute ordinals
+      const ordinalBySection: Record<string, number> = {
+        start: 0,
+        stop: 0,
+        continue: 0,
+        extra: 0,
+      };
+      const rows: Array<{
+        submissionId: string;
+        campaign: string;
+        section: string;
+        content: string;
+        ordinal: number;
+      }> = [];
+
+      for (const t of thoughts) {
+        if (!t || typeof t.section !== "string" || typeof t.content !== "string") {
+          continue;
+        }
+        const section = t.section;
+        const content = t.content.trim();
+        if (!ALLOWED_SECTIONS.has(section)) continue;
+        if (content.length === 0) continue;
+        if (content.length > FEEDBACK_MAX_CONTENT_CHARS) {
+          return res.status(400).json({ error: "Thought is too long" });
+        }
+        rows.push({
+          submissionId,
+          campaign: campaignName,
+          section,
+          content,
+          ordinal: ordinalBySection[section]++,
+        });
+      }
+
+      if (rows.length === 0) {
+        return res
+          .status(400)
+          .json({ error: "No valid thoughts found in submission" });
+      }
+
+      await db.insert(feedbackThoughts).values(rows);
+
+      // Log only counts + the submission id, never the content.
+      console.log(
+        `[${new Date().toISOString()}] feedback submit ok submissionId=${submissionId} thoughts=${rows.length} campaign=${campaignName}`
+      );
+
+      return res.json({ success: true });
+    } catch (error) {
+      console.error("Failed to record feedback:", error);
+      return res.status(500).json({ error: "Submission failed" });
+    }
+  });
+
+  // GET /api/admin/feedback/submissions - protected admin read.
+  // Returns the most recent submissions, grouped by submission_id.
+  app.get(
+    "/api/admin/feedback/submissions",
+    requireAuth,
+    async (_req: Request, res: Response) => {
+      if (!db) {
+        return res.status(503).json({ error: "Database not configured" });
+      }
+
+      try {
+        const rows = await db
+          .select()
+          .from(feedbackThoughts)
+          .orderBy(desc(feedbackThoughts.submittedAt))
+          .limit(2000);
+
+        // Group by submissionId, preserving most-recent-first order.
+        const order: string[] = [];
+        const grouped = new Map<
+          string,
+          {
+            submissionId: string;
+            submittedAt: string;
+            campaign: string;
+            sections: { start: string[]; stop: string[]; continue: string[]; extra: string[] };
+          }
+        >();
+
+        for (const r of rows) {
+          let entry = grouped.get(r.submissionId);
+          if (!entry) {
+            entry = {
+              submissionId: r.submissionId,
+              submittedAt: r.submittedAt.toISOString(),
+              campaign: r.campaign,
+              sections: { start: [], stop: [], continue: [], extra: [] },
+            };
+            grouped.set(r.submissionId, entry);
+            order.push(r.submissionId);
+          }
+          const bucket = entry.sections[r.section as keyof typeof entry.sections];
+          if (bucket) bucket.push(r.content);
+        }
+
+        // Within each submission, order thoughts by ordinal (DB returns desc by date,
+        // so we re-sort each bucket by ordinal asc using a second pass).
+        const ordinalsBySubmission = new Map<string, Map<string, Map<number, string>>>();
+        for (const r of rows) {
+          let bySection = ordinalsBySubmission.get(r.submissionId);
+          if (!bySection) {
+            bySection = new Map();
+            ordinalsBySubmission.set(r.submissionId, bySection);
+          }
+          let byOrdinal = bySection.get(r.section);
+          if (!byOrdinal) {
+            byOrdinal = new Map();
+            bySection.set(r.section, byOrdinal);
+          }
+          byOrdinal.set(r.ordinal, r.content);
+        }
+        for (const subId of order) {
+          const entry = grouped.get(subId)!;
+          const bySection = ordinalsBySubmission.get(subId);
+          if (!bySection) continue;
+          for (const section of ["start", "stop", "continue", "extra"] as const) {
+            const byOrdinal = bySection.get(section);
+            if (!byOrdinal) continue;
+            entry.sections[section] = Array.from(byOrdinal.entries())
+              .sort((a, b) => a[0] - b[0])
+              .map(([, content]) => content);
+          }
+        }
+
+        const submissions = order.slice(0, 500).map((id) => grouped.get(id)!);
+        return res.json({ submissions });
+      } catch (error) {
+        console.error("Failed to read feedback submissions:", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to read feedback submissions" });
+      }
+    }
+  );
 
   // ============================================
   // CHAT ENDPOINTS

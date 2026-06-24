@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import LinkCard from "@/components/LinkCard";
 import { motion } from "framer-motion";
-import { 
-  Mail, 
+import {
+  Mail,
   BarChart3,
-  DollarSign
+  DollarSign,
+  FileText
 } from "lucide-react";
 import { 
   SiLinkedin, 
@@ -33,7 +33,32 @@ export default function LinksContainer() {
         delay={0.15}
         iconBgColor="bg-gray-100"
       />
-      
+
+      {/* Résumé Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18, duration: 0.5 }}
+        className="relative mt-8 mb-4"
+      >
+        <div className="absolute -top-3 left-0 right-0 flex justify-center">
+          <span className="relative z-10 px-3">
+            <span className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white opacity-95"></span>
+            <span className="relative text-md font-medium text-gray-700">Résumé</span>
+          </span>
+        </div>
+        <div className="border border-gray-200 rounded-xl p-4 pt-6">
+          <LinkCard
+            href="/RoiShikler_Resume.pdf"
+            icon={<FileText className="h-5 w-5 text-indigo-600" />}
+            label="Download my résumé (PDF)"
+            showArrow={true}
+            iconBgColor="bg-indigo-100"
+            className="border border-gray-100"
+          />
+        </div>
+      </motion.div>
+
       {/* Thoughts & Writings Section */}
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
