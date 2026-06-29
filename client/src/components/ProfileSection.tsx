@@ -16,11 +16,10 @@ export default function ProfileSection() {
         I'm an AI-first product manager who loves taking products from 0→1. My
         path runs through defense R&amp;D in the IDF, autonomous vehicles at
         Mobileye, and multi-agent AI infrastructure at Band — and along the way
-        I've led and built deep-tech communities. Today I run ROaI, my
-        independent AI product &amp; consulting practice, helping businesses adopt
-        AI and startups modernize product management for the AI era. This page is
-        a hub for my professional links and thoughts on the technologies shaping
-        our future.
+        I've led and built deep-tech communities. Today I work as a freelancer —
+        product consulting and building AI workflows and automations for (mainly)
+        SMBs, to make them fitter for the new AI era. This page is a hub for my
+        professional links and thoughts on the technologies shaping our future.
       </p>
     </motion.div>
   );
